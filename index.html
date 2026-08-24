@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>학부모 상담 일정 신청</title>
+  <meta name="theme-color" content="#f6f8fb" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <p class="school-label">PARENT CONSULTATION</p>
+        <h1>학부모 상담 일정 신청</h1>
+      </div>
+      <button id="adminOpenBtn" class="admin-link" type="button">관리자</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro card">
+      <div>
+        <p class="intro-title">상담을 희망하시는 시간을 선택해 주세요.</p>
+        <p class="intro-desc">
+          신청이 완료된 시간은 자동으로 마감되며, 다른 학부모님은 선택할 수 없습니다.
+          모바일에서도 편하게 신청하실 수 있습니다.
+        </p>
+      </div>
+      <span class="live"><i></i> 실시간 반영</span>
+    </section>
+
+    <section class="form-card card">
+      <h2>신청자 정보</h2>
+      <div class="form-grid">
+        <label>
+          <span>학생 이름</span>
+          <input id="studentName" type="text" maxlength="20" placeholder="예: 홍길동" autocomplete="off">
+        </label>
+        <label>
+          <span>학부모 성함</span>
+          <input id="parentName" type="text" maxlength="20" placeholder="예: 김OO" autocomplete="name">
+        </label>
+        <label>
+          <span>연락처 <small>(선택)</small></span>
+          <input id="phone" type="tel" maxlength="20" placeholder="예: 010-1234-5678" autocomplete="tel">
+        </label>
+      </div>
+      <p class="privacy">입력한 정보는 상담 일정 확인을 위한 용도로만 사용됩니다.</p>
+    </section>
+
+    <section class="legend">
+      <span><i class="legend-dot available"></i>신청 가능</span>
+      <span><i class="legend-dot mine"></i>내 신청</span>
+      <span><i class="legend-dot closed"></i>마감</span>
+    </section>
+
+    <section id="scheduleWrap" class="schedule-wrap"></section>
+
+    <section class="notice card">
+      <strong>신청 안내</strong>
+      <p>원하는 시간을 누른 뒤 신청을 확정해 주세요. 거의 동시에 같은 시간을 선택한 경우 먼저 확정한 신청만 인정됩니다.</p>
+    </section>
+  </main>
+
+  <dialog id="bookingDialog" class="modal">
+    <form method="dialog" class="modal-box">
+      <p class="modal-kicker">상담 일정 확인</p>
+      <h2>이 시간으로 신청할까요?</h2>
+      <div id="bookingSummary" class="summary-box"></div>
+      <div class="modal-actions">
+        <button class="btn secondary" value="cancel">취소</button>
+        <button id="bookingConfirmBtn" class="btn primary" value="default">신청하기</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="adminDialog" class="modal">
+    <form method="dialog" class="modal-box admin-modal">
+      <div class="admin-head">
+        <div>
+          <p class="modal-kicker">ADMIN</p>
+          <h2>상담 일정 관리</h2>
+        </div>
+        <button class="icon-btn" value="cancel" aria-label="닫기">×</button>
+      </div>
+
+      <div id="adminLoginPanel">
+        <label class="admin-password">
+          <span>관리자 비밀번호</span>
+          <input id="adminPassword" type="password" placeholder="비밀번호 입력">
+        </label>
+        <button id="adminLoginBtn" type="button" class="btn primary full">관리자 화면 열기</button>
+        <p class="admin-help">초기 비밀번호는 설정 파일에서 변경합니다.</p>
+      </div>
+
+      <div id="adminPanel" hidden>
+        <div class="admin-toolbar">
+          <div>
+            <strong>요일별 상담 시간</strong>
+            <p>각 요일의 + 버튼을 눌러 시간을 추가할 수 있습니다.</p>
+          </div>
+          <button id="refreshAdminBtn" type="button" class="btn secondary small">새로고침</button>
+        </div>
+        <div id="adminDays" class="admin-days"></div>
+
+        <hr>
+
+        <div class="admin-toolbar">
+          <div>
+            <strong>신청 현황</strong>
+            <p>신청자와 예약 시간을 확인하고 필요하면 예약을 취소할 수 있습니다.</p>
+          </div>
+        </div>
+        <div id="bookingList" class="booking-list"></div>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="timeDialog" class="modal">
+    <form method="dialog" class="modal-box mini">
+      <p class="modal-kicker">시간 추가</p>
+      <h2 id="timeDialogTitle">상담 시간 추가</h2>
+      <label>
+        <span>시간</span>
+        <input id="newTimeInput" type="time" step="300">
+      </label>
+      <div class="modal-actions">
+        <button class="btn secondary" value="cancel">취소</button>
+        <button id="addTimeBtn" type="button" class="btn primary">추가</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="assertive"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
