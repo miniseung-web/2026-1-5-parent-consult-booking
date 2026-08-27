@@ -26,6 +26,7 @@ $("bookingConfirmBtn").onclick=async e=>{
 
  const student=clean($("studentName").value);
  const parent=clean($("parentName").value);
+ const reason=clean($("consultReason").value);
  const phone=phoneNorm($("phone").value);
  const phoneHash=await hashText(phone);
  const aKey=await applicantKey(student,phone);
@@ -55,6 +56,7 @@ $("bookingConfirmBtn").onclick=async e=>{
        applicantKey:aKey,
        studentName:student,
        parentName:parent,
+       consultReason:reason,
        phoneHash,
        phoneLast4:phone.slice(-4),
        dayId:selected.day.id,
@@ -122,7 +124,7 @@ function searchableText(b){
  const note=adminNotes.get(b.id)||"";
  return [
   b.studentName,b.parentName,b.phoneLast4,b.dayLabel,b.weekday,b.periodName,b.time,
-  b.mode==="inperson"?"대면":"비대면",note
+  b.mode==="inperson"?"대면":"비대면",b.consultReason,note
  ].filter(Boolean).join(" ").toLowerCase();
 }
 
@@ -209,7 +211,7 @@ function personCard(b,label,face){
  const phoneText=b.phoneLast4?`연락처 끝 ${b.phoneLast4}`:"연락처 등록";
  d.innerHTML=`<span class="badge ${face?"face":""}">${modeLabel}</span>
  <strong>${label} · ${b.studentName||"학생명 없음"}</strong>
- <p>학부모 ${b.parentName||"성함 없음"} · ${phoneText}</p>`;
+ <p>학부모 ${b.parentName||"성함 없음"} · ${phoneText}</p>${b.consultReason?`<div class="booking-reason"><strong>학부모 상담 신청 이유</strong>${b.consultReason}</div>`:""}`;
 
  const noteWrap=document.createElement("div");
  noteWrap.className="booking-note";
@@ -261,6 +263,7 @@ function downloadExcel(){
      "학생 이름":b.studentName||"",
      "학부모 성함":b.parentName||"",
      "연락처 끝 4자리":b.phoneLast4||"",
+     "학부모 상담 신청 이유":b.consultReason||"",
      "상담 메모":adminNotes.get(b.id)||""
    }));
 
